@@ -26,19 +26,17 @@ public class WordFrequency {
      * Без них - 4 балла
      */
     public static List<String> wordFrequency(Stream<String> lines) {
-       Map<String, Long> frequencyMap = lines
-               .map(w -> w.split("\\s+"))
-               .flatMap(Arrays::stream)
-               .map(String::toLowerCase)
-               .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-
-       List<String> list = frequencyMap.entrySet().stream()
-               .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-               .limit(10)
-               .map(Map.Entry::getKey)
-               .collect(Collectors.toList());
-
-        return list;
+        return lines.map(w -> w.split("\\s+"))
+                .flatMap(Arrays::stream)
+                .map(String::toLowerCase)
+                .map(w -> w.replaceAll("[.,]", ""))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed().thenComparing(Map.Entry.comparingByKey()))
+                .limit(10)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
 
