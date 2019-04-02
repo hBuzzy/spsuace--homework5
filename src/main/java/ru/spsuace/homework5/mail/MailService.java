@@ -13,22 +13,22 @@ import java.util.function.Consumer;
  *
  * Оценка за задание 4 балла (еще 2 балла можно получить дополнительно)
  */
-public class MailService<T> implements Consumer<MailContent<T>> {
+public class MailService<T> implements Consumer<MailsTemplate> {
     private Map<String, List<T>> mailMap = new HashMap<>();
+
     /**
      * С помощью этого метода почтовый сервис обрабатывает письма и зарплаты
      * 1 балл
      */
 
     @Override
-    public void accept(MailContent<T> message) {
-        List<T> list = mailMap.get(message.getRecipient());
-
-        if (list == null) {
-            list = new ArrayList<>();
-        }
+    public void accept(MailsTemplate message) {
+        mailMap.computeIfAbsent(message.getRecipient(), value -> {
+            List list = new ArrayList<>();
+            return list;
+        });
+        List list = mailMap.get(message.getRecipient());
         list.add(message.getMessage());
-        mailMap.put(message.getRecipient(), list);
     }
 
     /**
