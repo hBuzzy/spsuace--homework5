@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  *
  * Оценка за задание 4 балла (еще 2 балла можно получить дополнительно)
  */
-public class MailService<T> implements Consumer<MailsTemplate> {
+public class MailService<T> implements Consumer<MailsTemplate<T>> {
     private Map<String, List<T>> mailMap = new HashMap<>();
 
     /**
@@ -24,11 +24,10 @@ public class MailService<T> implements Consumer<MailsTemplate> {
     @Override
     public void accept(MailsTemplate message) {
         mailMap.computeIfAbsent(message.getRecipient(), value -> {
-            List list = new ArrayList<>();
-            return list;
+            return new ArrayList<>();
         });
-        List list = mailMap.get(message.getRecipient());
-        list.add(message.getMessage());
+        List<T> list = mailMap.get(message.getRecipient());
+        list.add((T)message.getMessage());
     }
 
     /**
