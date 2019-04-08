@@ -22,12 +22,10 @@ public class MailService<T> implements Consumer<MailsTemplate<T>> {
      */
 
     @Override
-    public void accept(MailsTemplate message) {
-        mailMap.computeIfAbsent(message.getRecipient(), value -> {
-            return new ArrayList<>();
-        });
+    public void accept(MailsTemplate<T> message) {
+        mailMap.computeIfAbsent(message.getRecipient(), value -> new ArrayList<>());
         List<T> list = mailMap.get(message.getRecipient());
-        list.add((T)message.getMessage());
+        list.add(message.getMessage());
     }
 
     /**

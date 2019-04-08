@@ -1,9 +1,9 @@
 package ru.spsuace.homework5.mail;
 
 public class MailsTemplate<T> {
-    private String sender;
-    private String recipient;
-    private T message;
+    private final String sender;
+    private final String recipient;
+    private final T message;
 
     MailsTemplate(String sender, String recipient, T message) {
         this.sender = sender;
